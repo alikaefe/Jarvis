@@ -1,2 +1,39 @@
 # Jarvis
 Apk android assistente
+echo "# Jarvis" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/alikaefe/Jarvis.git
+git push -u origin mainname: Gerar APK do Jarvis
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configurar Java 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Dar permissao de execucao ao Gradle
+      run: chmod +x gradlew
+
+    - name: Compilar APK Debug
+      run: ./gradlew assembleDebug
+
+    - name: Upload do APK para Download
+      uses: actions/upload-artifact@v4
+      with:
+        name: Jarvis-Debug-APK
+        path: app/build/outputs/apk/debug/app-debug.apk
